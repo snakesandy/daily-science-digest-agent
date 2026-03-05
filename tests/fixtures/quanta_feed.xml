@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Quanta Magazine</title>
+    <link>https://www.quantamagazine.org</link>
+    <item>
+      <title>New Quantum Algorithm Breaks Speed Record</title>
+      <link>https://www.quantamagazine.org/new-quantum-algorithm-20260305/</link>
+      <pubDate>Thu, 05 Mar 2026 10:00:00 +0000</pubDate>
+      <description>Researchers have discovered a quantum algorithm that solves certain optimization problems exponentially faster than any known classical method.</description>
+      <category>Physics</category>
+      <category>Computer Science</category>
+    </item>
+    <item>
+      <title>Mathematicians Prove New Theorem in Number Theory</title>
+      <link>https://www.quantamagazine.org/number-theory-breakthrough-20260304/</link>
+      <pubDate>Wed, 04 Mar 2026 14:00:00 +0000</pubDate>
+      <description>A team of mathematicians has proved a long-standing conjecture about prime number distribution, with implications for cryptography.</description>
+      <category>Mathematics</category>
+    </item>
+    <item>
+      <title>The Joy of Why Podcast: Dark Matter Mysteries</title>
+      <link>https://www.quantamagazine.org/podcast/dark-matter-20260304/</link>
+      <pubDate>Wed, 04 Mar 2026 08:00:00 +0000</pubDate>
+      <description>Listen to our latest episode about dark matter research.</description>
+      <category>Podcast</category>
+      <category>Physics</category>
+    </item>
+    <item>
+      <title>AI Model Achieves New Breakthrough in Protein Folding</title>
+      <link>https://www.quantamagazine.org/ai-protein-folding-20260305/</link>
+      <pubDate>Thu, 05 Mar 2026 12:00:00 +0000</pubDate>
+      <description>A novel deep learning architecture can predict protein structures with unprecedented accuracy, opening doors for drug discovery.</description>
+      <category>Computer Science</category>
+      <category>Biology</category>
+    </item>
+    <item>
+      <title>Old Article About Geometry</title>
+      <link>https://www.quantamagazine.org/old-geometry-20260201/</link>
+      <pubDate>Sun, 01 Feb 2026 10:00:00 +0000</pubDate>
+      <description>An older article that should be filtered by date.</description>
+      <category>Mathematics</category>
+    </item>
+  </channel>
+</rss>
