@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Nature</title>
+    <link>https://www.nature.com</link>
+    <item>
+      <title>A novel quantum error correction code achieves record fidelity</title>
+      <link>https://www.nature.com/articles/s41586-026-00001-1</link>
+      <pubDate>Wed, 04 Mar 2026 10:00:00 +0000</pubDate>
+      <description>Researchers demonstrate a breakthrough quantum error correction approach that surpasses previous thresholds.</description>
+      <category>Physics</category>
+      <category>Quantum Computing</category>
+    </item>
+    <item>
+      <title>CRISPR advance enables precise gene editing in plant cells</title>
+      <link>https://www.nature.com/articles/s41586-026-00002-2</link>
+      <pubDate>Tue, 03 Mar 2026 14:00:00 +0000</pubDate>
+      <description>A new CRISPR variant achieves unprecedented precision in editing plant genomes, opening paths for sustainable agriculture.</description>
+      <category>Genetics</category>
+      <category>Biotechnology</category>
+    </item>
+    <item>
+      <title>Podcast: Science in 2026</title>
+      <link>https://www.nature.com/podcast/science-2026</link>
+      <pubDate>Mon, 02 Mar 2026 08:00:00 +0000</pubDate>
+      <description>Listen to our year-ahead discussion.</description>
+      <category>Podcast</category>
+    </item>
+    <item>
+      <title>Old article about chemistry</title>
+      <link>https://www.nature.com/articles/old-chemistry</link>
+      <pubDate>Sun, 01 Feb 2026 10:00:00 +0000</pubDate>
+      <description>An older article.</description>
+      <category>Chemistry</category>
+    </item>
+  </channel>
+</rss>

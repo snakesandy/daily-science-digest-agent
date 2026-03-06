@@ -12,7 +12,7 @@ from digest.filter import filter_articles
 from digest.models import Article
 from digest.output import ConsoleOutput, TelegramOutput
 from digest.ranker import rank_and_select
-from digest.sources import QuantaSource, ScientificAmericanSource
+from digest.sources import ArxivSource, NatureSource, QuantaSource
 from digest.summarizer import summarize_articles
 
 
@@ -28,10 +28,10 @@ def run(dry_run: bool = False) -> list[Article]:
         print("Error: OPENAI_API_KEY not set. Use --dry-run or set in .env", file=sys.stderr)
         sys.exit(1)
 
-    since = datetime.now(timezone.utc) - timedelta(days=3)
+    since = datetime.now(timezone.utc) - timedelta(days=7)
 
     # 1. Fetch from all sources
-    sources = [QuantaSource(), ScientificAmericanSource()]
+    sources = [QuantaSource(), NatureSource(), ArxivSource()]
     all_articles: list[Article] = []
     for source in sources:
         try:

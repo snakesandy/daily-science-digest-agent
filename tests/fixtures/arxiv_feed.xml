@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>ArXiv CS.AI</title>
+    <link>https://arxiv.org</link>
+    <item>
+      <title>Solving Combinatorial Optimization with Graph Neural Networks (arXiv:2603.01234v1 [cs.AI])</title>
+      <link>https://arxiv.org/abs/2603.01234</link>
+      <pubDate>Wed, 04 Mar 2026 00:00:00 +0000</pubDate>
+      <description>We propose a novel graph neural network architecture that outperforms existing methods on NP-hard combinatorial optimization problems.</description>
+      <category>cs.AI</category>
+      <category>cs.LG</category>
+    </item>
+    <item>
+      <title>A New Proof of the Riemann Hypothesis for Function Fields</title>
+      <link>https://arxiv.org/abs/2603.05678</link>
+      <pubDate>Tue, 03 Mar 2026 00:00:00 +0000</pubDate>
+      <description>We present a simplified proof of the Riemann hypothesis for function fields using novel algebraic geometry techniques.</description>
+      <category>math.NT</category>
+      <category>math.AG</category>
+    </item>
+    <item>
+      <title>Old paper on fluid dynamics</title>
+      <link>https://arxiv.org/abs/2601.00001</link>
+      <pubDate>Sun, 01 Feb 2026 00:00:00 +0000</pubDate>
+      <description>An older paper.</description>
+      <category>physics.flu-dyn</category>
+    </item>
+  </channel>
+</rss>
