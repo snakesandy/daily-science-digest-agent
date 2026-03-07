@@ -15,7 +15,7 @@ PRIORITY_KEYWORDS = {
 # Curated editorial sources get a strong bonus over raw preprints
 SOURCE_BONUS = {
     "quanta": 8.0,
-    "nature": 6.0,
+    "nature": 3.0,
     "arxiv": 0.0,
 }
 
