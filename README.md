@@ -1,6 +1,6 @@
 # Daily Science Digest Agent
 
-A daily morning digest agent that selects the 10 best new articles focused on **innovation in math and science** from Quanta Magazine, Nature, and arXiv. Summarizes them using OpenAI GPT-4o-mini and delivers clickable links with summaries to Telegram every morning at 6:00 AM EST.
+A daily morning digest agent that selects the 10 best new articles focused on **algorithms, mathematics, and AI/ML innovation** from Quanta Magazine, Nature, and arXiv. Summarizes them using OpenAI GPT-4o-mini and delivers clickable links with summaries to Telegram every morning at 6:00 AM EST.
 
 ## How It Works
 
@@ -10,20 +10,20 @@ RSS Fetch → Deduplicate → Filter → Rank → Summarize → Deliver
 
 1. **Fetch** articles from Quanta Magazine (RSS), Nature (RSS), and arXiv (RSS — math, physics, cs.AI, cs.LG)
 2. **Deduplicate** against previously seen articles (JSON file store, 30-day retention) — ensures no repeat articles day to day
-3. **Filter** out podcasts, videos, retractions, and multimedia content
-4. **Rank** by topic relevance (math, physics, AI, science innovation) + recency + priority keywords + source quality
+3. **Filter** out podcasts/videos/retractions, require minimum topic relevance, penalize off-topic content (biology, chemistry, medicine, politics)
+4. **Rank** by topic relevance + innovation signal + recency + source quality
 5. **Summarize** the top 10 via OpenAI GPT-4o-mini (1-2 sentences: what's new + why it matters)
 6. **Deliver** to console and Telegram
 
 ## Sources
 
-| Source | Method | Strength |
-|--------|--------|----------|
-| **Quanta Magazine** | RSS feed | Deep, curated math/physics/CS journalism |
-| **Nature** | RSS feed | Broad cutting-edge science research |
-| **arXiv** | RSS feeds (math, physics, cs.AI, cs.LG) | Latest preprints and breakthroughs |
+| Source | Method | Bonus | Strength |
+|--------|--------|-------|----------|
+| **Quanta Magazine** | RSS feed | +8 | Deep, curated math/physics/CS journalism |
+| **Nature** | RSS feed | +3 | Cutting-edge research (filtered to math/CS/AI) |
+| **arXiv** | RSS feeds (math, physics, cs.AI, cs.LG) | capped at 10 | Latest preprints in target fields |
 
-Curated editorial sources (Quanta, Nature) are ranked higher than raw preprints (arXiv) to ensure the digest favors accessible, high-impact articles. arXiv papers still appear when they are highly relevant.
+Curated editorial sources (Quanta, Nature) are ranked higher than raw preprints (arXiv) to ensure the digest favors accessible, high-impact articles. arXiv papers still appear when highly relevant. Note: arXiv RSS feeds are empty on weekends.
 
 ## Project Structure
 
@@ -39,7 +39,7 @@ daily-science-digest-agent/
 │   │   ├── quanta.py            # Quanta Magazine RSS
 │   │   ├── nature.py            # Nature RSS
 │   │   └── arxiv.py             # arXiv RSS (multiple categories)
-│   ├── filter.py                # Podcast/video exclusion + topic scoring
+│   ├── filter.py                # Topic filtering + off-topic penalty + relevance gate
 │   ├── ranker.py                # Score + select top 10
 │   ├── summarizer.py            # OpenAI GPT-4o-mini summarization
 │   ├── dedup.py                 # JSON-file dedup store
@@ -129,13 +129,12 @@ pytest tests/ -v
 
 The repo includes a GitHub Actions workflow (`.github/workflows/digest.yml`) that runs automatically every day at 6:00 AM EST (11:00 UTC).
 
-To use it, add these secrets in your GitHub repo settings (Settings > Secrets and variables > Actions):
+The workflow and secrets are configured on the **snakesandy** GitHub account:
+- Repo: `https://github.com/snakesandy/daily-science-digest-agent`
+- Secrets already set: `OPENAI_API_KEY`, `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID`
+- Workflow runs successfully (tested manually)
 
-- `OPENAI_API_KEY`
-- `TELEGRAM_BOT_TOKEN`
-- `TELEGRAM_CHAT_ID`
-
-You can also trigger a run manually from the Actions tab using the "Run workflow" button.
+You can trigger a run manually from the Actions tab using the "Run workflow" button.
 
 ### Local cron (alternative)
 
@@ -154,54 +153,53 @@ Note: local cron requires your machine to be awake at the scheduled time.
 
 ## Configuration
 
-### Topic Priorities
+### Topic Focus
 
-The agent prioritizes articles about innovation in:
-- **Mathematics**: algebra, geometry, topology, number theory, proofs, conjectures, optimization, cryptography
-- **Physics**: quantum, particle physics, cosmology, astrophysics, black holes, superconductors, fusion, photonics
-- **AI/CS**: artificial intelligence, machine learning, deep learning, neural networks, algorithms
-- **Broader science**: genomics, CRISPR, synthetic biology, nanotechnology, materials science, semiconductors
+The agent is tightly focused on **algorithms, mathematics, and AI/ML innovation**. Articles must score > 0 on topic relevance to be included.
 
-These keywords are defined in `src/digest/filter.py` and can be modified.
+**On-topic keywords** (defined in `src/digest/filter.py`):
+- **Mathematics**: algebra, geometry, topology, number theory, proofs, conjectures, optimization, cryptography, combinatorics, graph theory, category theory
+- **Algorithms & CS**: algorithm, computation, complexity, NP-hard, data structures, solvers, approximation
+- **AI/ML**: machine learning, deep learning, neural networks, LLMs, transformers, reinforcement learning, generative models, computer vision, NLP, reasoning
+- **Quantum computing**: quantum algorithm, quantum computing, qubit
+
+**Off-topic penalties** (-2 per keyword hit): biology, chemistry, medicine, ecology, politics, nutrition, surgery, etc. This prevents Nature's biology-heavy content from dominating.
 
 ### Ranking
 
 Articles are scored by:
 - **Topic relevance** (0-10): keyword matches in title, description, and categories
-- **Innovation signal** (0-10): keywords like "breakthrough", "discovery", "novel", "first", "solved", "proves"
-- **Recency bonus** (0-3): newer articles score higher
-- **Source quality bonus**: Quanta (+8), Nature (+6), arXiv (capped at 10 total)
-
-This ensures curated editorial content surfaces above raw preprints, while still including exceptional arXiv papers.
+- **Innovation signal**: keywords like "breakthrough", "discovery", "solved", "proves", "outperforms" (+1.5 each)
+- **Off-topic penalty**: biology/chemistry/medicine/politics keywords (-2.0 each)
+- **Recency bonus** (0-3): newer articles score higher (gentle decay over 7 days)
+- **Source quality bonus**: Quanta (+8), Nature (+3), arXiv (capped at 10 total)
 
 ### Fetch Window
 
-Articles from the last 7 days are fetched to ensure all sources are well represented. The dedup store ensures you never see the same article twice across runs.
+Articles from the last 7 days are fetched. The dedup store (30-day retention) ensures you never see the same article twice.
 
-## Output Example
+## Current State & Known Issues
 
-```
-=== Daily Science Digest — March 6, 2026 ===
+### Working
+- All 3 sources fetch correctly (Quanta, Nature, arXiv)
+- Telegram delivery works (bot: "Best Articles")
+- GitHub Actions workflow runs successfully on `snakesandy` account
+- 26 tests passing
+- Dedup prevents repeat articles
 
-1) Can the Most Abstract Math Make the World a Better Place?
-   Applied category theory may offer mathematical tools for addressing
-   environmental challenges, potentially leading to innovative solutions
-   for sustainability.
-   https://www.quantamagazine.org/can-the-most-abstract-math-...
+### Known Issues / TODO
+- **arXiv returns 0 articles on weekends** — this is expected, arXiv doesn't publish on weekends
+- **Telegram bot token was exposed in conversation screenshots** — should regenerate via @BotFather `/revoke` and update `.env` + GitHub secret
+- **GitHub Actions on `sandeepprabhakara` account has billing lock** — using `snakesandy` account instead
+- **Old `sandeepprabhakara` repo still exists** (private) — can be deleted
+- **Scoring tuning** — may need further adjustment once arXiv weekday data is available; current tuning was done on a weekend with 0 arXiv articles
+- **No dedup persistence in GitHub Actions** — each run starts fresh (dedup file is not committed). On the flip side, the 7-day window + dedup means articles won't repeat within a local session, but GitHub Actions runs are stateless
 
-2) AI can write genomes — how long until it creates synthetic life?
-   AI models can now generate complete genome sequences, raising questions
-   about the feasibility and ethics of creating synthetic organisms.
-   https://www.nature.com/articles/d41586-026-00681-y
-
-3) First 'half Möbius' carbon chain wows chemists
-   Scientists synthesized the first half-Möbius carbon structure, a
-   topological milestone in molecular chemistry with potential materials
-   science applications.
-   https://www.nature.com/articles/d41586-026-00682-x
-
-...
-```
+### Future Ideas
+- SMS/email delivery (output ABC is already set up)
+- More sources (e.g., Proceedings of the National Academy of Sciences, ACM Digital Library)
+- SQLite for persistent dedup across GitHub Actions runs
+- User-configurable topic keywords via env var or config file
 
 ## Cost
 
@@ -210,9 +208,19 @@ Articles from the last 7 days are fetched to ensure all sources are well represe
 ## Dependencies
 
 - `feedparser` — RSS parsing for Quanta, Nature, and arXiv
-- `httpx` — HTTP client (used by Telegram output)
-- `beautifulsoup4` — HTML parsing (Scientific American fallback)
+- `httpx` — HTTP client (Telegram output + Scientific American fallback)
+- `beautifulsoup4` — HTML parsing
 - `openai` — GPT-4o-mini summarization
 - `python-dotenv` — Environment variable loading
 
 Dev: `pytest`, `respx`
+
+## Accounts & Infrastructure
+
+| Service | Account | Notes |
+|---------|---------|-------|
+| GitHub | `snakesandy` | Public repo, Actions workflow, secrets configured |
+| GitHub (old) | `sandeepprabhakara` | Billing locked, not used |
+| OpenAI | — | API key in `.env` and GitHub Secrets |
+| Telegram | Bot: "Best Articles" | Token needs regeneration (exposed in screenshots) |
+| Telegram | Chat ID: user's personal chat | Messages delivered here |
