@@ -64,7 +64,8 @@ def run(dry_run: bool = False) -> list[Article]:
     now = datetime.now(timezone.utc)
     outputs = [ConsoleOutput()]
     if telegram_token and telegram_chat_id:
-        outputs.append(TelegramOutput(telegram_token, telegram_chat_id))
+        chat_ids = [cid.strip() for cid in telegram_chat_id.split(",") if cid.strip()]
+        outputs.append(TelegramOutput(telegram_token, chat_ids))
     for output in outputs:
         output.send(top_articles, now)
 

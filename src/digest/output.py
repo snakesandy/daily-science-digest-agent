@@ -35,9 +35,9 @@ class ConsoleOutput(DigestOutput):
 
 
 class TelegramOutput(DigestOutput):
-    def __init__(self, bot_token: str, chat_id: str):
+    def __init__(self, bot_token: str, chat_ids: list[str]):
         self.bot_token = bot_token
-        self.chat_id = chat_id
+        self.chat_ids = chat_ids
 
     def send(self, articles: list[Article], date: datetime) -> None:
         date_str = date.strftime("%B %-d, %Y")
@@ -59,23 +59,23 @@ class TelegramOutput(DigestOutput):
 
         message = "\n\n".join(lines)
 
-        # Telegram has a 4096 char limit per message
         url = f"https://api.telegram.org/bot{self.bot_token}/sendMessage"
-        try:
-            resp = httpx.post(
-                url,
-                json={
-                    "chat_id": self.chat_id,
-                    "text": message,
-                    "parse_mode": "HTML",
-                    "disable_web_page_preview": True,
-                },
-                timeout=30,
-            )
-            resp.raise_for_status()
-            print("Telegram message sent successfully.")
-        except Exception as e:
-            print(f"Warning: Failed to send Telegram message: {e}")
+        for chat_id in self.chat_ids:
+            try:
+                resp = httpx.post(
+                    url,
+                    json={
+                        "chat_id": chat_id,
+                        "text": message,
+                        "parse_mode": "HTML",
+                        "disable_web_page_preview": True,
+                    },
+                    timeout=30,
+                )
+                resp.raise_for_status()
+                print(f"Telegram message sent to {chat_id}.")
+            except Exception as e:
+                print(f"Warning: Failed to send Telegram message to {chat_id}: {e}")
 
 
 def _escape_html(text: str) -> str:
