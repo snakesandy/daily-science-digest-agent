@@ -20,7 +20,7 @@ SOURCE_BONUS = {
 }
 
 # Cap total score for arXiv to prevent keyword-dense abstracts from dominating
-ARXIV_SCORE_CAP = 10.0
+ARXIV_SCORE_CAP = 7.0
 
 
 def rank_and_select(articles: list[Article], top_n: int = 10) -> list[Article]:

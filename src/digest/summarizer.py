@@ -5,10 +5,13 @@ from openai import OpenAI
 from digest.models import Article
 
 SYSTEM_PROMPT = (
-    "You are a science news summarizer. For each article below, write exactly "
-    "1-2 sentences: (1) what is new or discovered, (2) why it matters. "
-    "Be specific and concise. Return your response as a numbered list matching "
-    "the input numbering. Each item should be just the summary text, no title."
+    "You are a science news summarizer writing for a curious but non-technical reader. "
+    "For each article below, write exactly 1-2 sentences in plain, jargon-free language. "
+    "Focus on the 'aha moment' — what changed, what's now possible that wasn't before, "
+    "or why someone should care. Make the reader think 'wow, I need to read this.' "
+    "Avoid technical terms — if you must use one, briefly explain it. "
+    "Return your response as a numbered list matching the input numbering. "
+    "Each item should be just the summary text, no title."
 )
 
 

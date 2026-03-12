@@ -19,7 +19,7 @@ def _make_article(**kwargs):
 
 
 def test_filter_keeps_articles():
-    articles = [_make_article(title="Quantum Discovery")]
+    articles = [_make_article(title="New AI Breakthrough in Deep Learning")]
     result = filter_articles(articles)
     assert len(result) == 1
 
